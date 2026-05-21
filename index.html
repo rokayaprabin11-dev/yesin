@@ -1,350 +1,1342 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yesin Roka Magar - Financial Consultant & MDRT Member</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Yesin Roka Magar — Financial Consultant & MDRT Member</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* ===================================================================
+       CSS VARIABLES & RESET
+    =================================================================== */
+    :root {
+      --gold: #c9922a;
+      --gold-light: #e5b567;
+      --gold-pale: rgba(201,146,42,0.12);
+      --gold-border: rgba(201,146,42,0.25);
+      --bg-base: #faf6f0;
+      --bg-alt:  #f4efe7;
+      --glass: rgba(255,255,255,0.60);
+      --glass-strong: rgba(255,255,255,0.80);
+      --glass-border: rgba(255,255,255,0.75);
+      --text-dark: #1c1610;
+      --text-mid:  #5a4e3c;
+      --text-soft: #8a7d6a;
+      --navy: #162040;
+      --shadow-sm: 0 4px 20px rgba(0,0,0,0.07);
+      --shadow-md: 0 8px 40px rgba(0,0,0,0.10);
+      --shadow-gold: 0 8px 30px rgba(201,146,42,0.18);
+      --radius: 20px;
+      --radius-sm: 12px;
+    }
+
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: var(--bg-base);
+      color: var(--text-dark);
+      overflow-x: hidden;
+    }
+
+    /* ===================================================================
+       MESH BACKGROUND ORBS
+    =================================================================== */
+    .orb-layer {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.35;
+    }
+    .orb-1 { width:600px; height:600px; background:radial-gradient(circle, #e5c97a, transparent 70%); top:-150px; right:-100px; }
+    .orb-2 { width:500px; height:500px; background:radial-gradient(circle, #b8d4f0, transparent 70%); bottom:10%; left:-80px; }
+    .orb-3 { width:350px; height:350px; background:radial-gradient(circle, #f5d9a8, transparent 70%); top:45%; right:5%; }
+
+    /* ===================================================================
+       TYPOGRAPHY
+    =================================================================== */
+    h1, h2, h3 { font-family: 'Cormorant Garamond', serif; }
+    .section-title {
+      font-size: clamp(2rem, 4vw, 2.8rem);
+      font-weight: 600;
+      color: var(--navy);
+      text-align: center;
+      letter-spacing: 0.5px;
+      margin-bottom: 12px;
+      position: relative;
+    }
+    .section-title span { color: var(--gold); }
+    .title-line {
+      width: 60px; height: 3px;
+      background: linear-gradient(90deg, var(--gold), var(--gold-light));
+      margin: 0 auto 50px;
+      border-radius: 2px;
+    }
+    .section-sub {
+      text-align: center;
+      color: var(--text-soft);
+      font-size: 1rem;
+      margin-bottom: 50px;
+      max-width: 600px;
+      margin-left: auto; margin-right: auto;
+    }
+
+    /* ===================================================================
+       GLASS UTILITY
+    =================================================================== */
+    .glass {
+      background: var(--glass);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1px solid var(--glass-border);
+      box-shadow: var(--shadow-sm);
+    }
+    .glass-strong {
+      background: var(--glass-strong);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid var(--glass-border);
+      box-shadow: var(--shadow-md);
+    }
+
+    /* ===================================================================
+       PRELOADER
+    =================================================================== */
+    #preloader {
+      position: fixed; inset: 0;
+      background: var(--bg-base);
+      display: flex; flex-direction: column;
+      justify-content: center; align-items: center;
+      z-index: 9999;
+      transition: opacity 0.6s ease, visibility 0.6s ease;
+    }
+    #preloader.hidden { opacity:0; visibility:hidden; }
+    .preloader-ring {
+      width: 60px; height: 60px;
+      border: 3px solid var(--gold-pale);
+      border-top: 3px solid var(--gold);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-bottom: 18px;
+    }
+    .preloader-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.2rem;
+      color: var(--gold);
+      letter-spacing: 4px;
+      text-transform: uppercase;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ===================================================================
+       HEADER / NAV
+    =================================================================== */
+    header {
+      position: fixed; top: 0; left: 0; width: 100%;
+      z-index: 1000;
+      padding: 0 7%;
+      height: 70px;
+      display: flex; align-items: center; justify-content: space-between;
+      background: rgba(250,246,240,0.80);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--gold-border);
+      transition: box-shadow 0.3s;
+    }
+    header.scrolled { box-shadow: 0 4px 24px rgba(0,0,0,0.08); }
+
+    .logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.6rem; font-weight: 700;
+      color: var(--navy); letter-spacing: 1px;
+      text-decoration: none;
+    }
+    .logo span { color: var(--gold); }
+
+    nav ul { list-style: none; display: flex; gap: 32px; }
+    nav ul li a {
+      font-size: 0.88rem; font-weight: 500; color: var(--text-mid);
+      text-decoration: none; letter-spacing: 0.5px;
+      text-transform: uppercase; position: relative;
+      transition: color 0.3s;
+    }
+    nav ul li a::after {
+      content: ''; position: absolute; bottom: -4px; left: 0;
+      width: 0; height: 2px;
+      background: var(--gold);
+      transition: width 0.3s ease;
+    }
+    nav ul li a:hover { color: var(--gold); }
+    nav ul li a:hover::after { width: 100%; }
+
+    .hamburger {
+      display: none; flex-direction: column; gap: 5px;
+      cursor: pointer; padding: 4px;
+    }
+    .hamburger span {
+      display: block; width: 24px; height: 2px;
+      background: var(--navy); border-radius: 2px;
+      transition: all 0.3s;
+    }
+
+    /* ===================================================================
+       HERO SECTION
+    =================================================================== */
+    #home {
+      min-height: 100vh;
+      display: flex; align-items: center;
+      padding: 100px 7% 60px;
+      position: relative; z-index: 1;
+      gap: 60px;
+    }
+    .hero-text { flex: 1; max-width: 580px; }
+    .hero-badge {
+      display: inline-block;
+      background: var(--gold-pale);
+      border: 1px solid var(--gold-border);
+      color: var(--gold);
+      font-size: 0.78rem; font-weight: 600;
+      letter-spacing: 2px; text-transform: uppercase;
+      padding: 6px 18px; border-radius: 50px;
+      margin-bottom: 24px;
+    }
+    .hero-text h1 {
+      font-size: clamp(2.4rem, 5vw, 3.8rem);
+      line-height: 1.15; color: var(--navy);
+      font-weight: 600; margin-bottom: 8px;
+    }
+    .hero-text h1 em { font-style: italic; color: var(--gold); }
+    .hero-role-line {
+      font-size: 1.2rem; color: var(--text-mid);
+      font-weight: 400; margin-bottom: 22px;
+    }
+    .hero-role-line .typing-animation {
+      color: var(--gold); font-weight: 600;
+      border-right: 2px solid var(--gold);
+      padding-right: 3px;
+      animation: blink 0.8s step-end infinite;
+    }
+    @keyframes blink { 50% { border-color: transparent; } }
+    .hero-text p {
+      font-size: 1rem; line-height: 1.8;
+      color: var(--text-mid); margin-bottom: 30px;
+    }
+
+    /* Stats */
+    .hero-stats { display: flex; gap: 28px; margin-bottom: 32px; flex-wrap: wrap; }
+    .stat-pill {
+      background: var(--glass-strong);
+      border: 1px solid var(--gold-border);
+      border-radius: var(--radius);
+      padding: 16px 24px;
+      backdrop-filter: blur(12px);
+      box-shadow: var(--shadow-sm);
+      text-align: center;
+    }
+    .stat-pill .num {
+      display: block; font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem; font-weight: 700; color: var(--gold);
+      line-height: 1;
+    }
+    .stat-pill .lbl {
+      font-size: 0.73rem; color: var(--text-soft);
+      text-transform: uppercase; letter-spacing: 1px;
+      margin-top: 5px; display: block;
+    }
+
+    /* Socials */
+    .hero-socials { display: flex; gap: 14px; margin-bottom: 30px; }
+    .hero-socials a {
+      width: 42px; height: 42px; border-radius: 50%;
+      background: var(--glass-strong);
+      border: 1px solid var(--gold-border);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--gold); font-size: 1rem;
+      text-decoration: none;
+      transition: all 0.3s; box-shadow: var(--shadow-sm);
+    }
+    .hero-socials a:hover {
+      background: var(--gold); color: #fff;
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-gold);
+    }
+
+    /* CTA Button */
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: linear-gradient(135deg, var(--gold), var(--gold-light));
+      color: #fff; font-weight: 600; font-size: 0.92rem;
+      letter-spacing: 0.5px; text-decoration: none;
+      padding: 13px 30px; border-radius: 50px;
+      transition: all 0.3s;
+      box-shadow: 0 4px 20px rgba(201,146,42,0.35);
+      border: none; cursor: pointer; font-family: 'Outfit', sans-serif;
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(201,146,42,0.45);
+    }
+    .btn-outline {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: transparent;
+      color: var(--gold); font-weight: 600; font-size: 0.92rem;
+      letter-spacing: 0.5px; text-decoration: none;
+      padding: 12px 28px; border-radius: 50px;
+      border: 2px solid var(--gold);
+      transition: all 0.3s; cursor: pointer;
+      font-family: 'Outfit', sans-serif;
+    }
+    .btn-outline:hover {
+      background: var(--gold); color: #fff;
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-gold);
+    }
+
+    /* Hero Image */
+    .hero-image-wrap {
+      flex: 0 0 auto;
+      position: relative;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .hero-img-ring {
+      width: 360px; height: 360px; border-radius: 50%;
+      background: conic-gradient(var(--gold) 0deg 90deg, transparent 90deg 180deg, var(--gold-light) 180deg 270deg, transparent 270deg 360deg);
+      padding: 4px; display: flex; align-items: center; justify-content: center;
+      animation: ring-spin 12s linear infinite;
+      box-shadow: var(--shadow-gold);
+    }
+    @keyframes ring-spin { to { transform: rotate(360deg); } }
+    .hero-img-inner {
+      width: 352px; height: 352px; border-radius: 50%;
+      overflow: hidden;
+      background: var(--glass-strong);
+      display: flex; align-items: center; justify-content: center;
+      border: 4px solid white;
+    }
+    .hero-img-inner img {
+      width: 100%; height: 100%; object-fit: cover; object-position: top;
+    }
+    .hero-badge-float {
+      position: absolute; bottom: 20px; right: -20px;
+      background: var(--glass-strong);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--gold-border);
+      border-radius: var(--radius-sm);
+      padding: 14px 20px;
+      box-shadow: var(--shadow-md);
+      display: flex; align-items: center; gap: 10px;
+    }
+    .hero-badge-float .badge-icon {
+      width: 38px; height: 38px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--gold), var(--gold-light));
+      display: flex; align-items: center; justify-content: center;
+      color: #fff; font-size: 1rem;
+    }
+    .hero-badge-float .badge-text { font-size: 0.78rem; color: var(--text-mid); }
+    .hero-badge-float .badge-text strong { display: block; color: var(--navy); font-size: 0.88rem; }
+
+    /* ===================================================================
+       ABOUT SECTION
+    =================================================================== */
+    #about {
+      padding: 100px 7%;
+      background: var(--bg-alt);
+      position: relative; z-index: 1;
+    }
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.4fr;
+      gap: 50px; align-items: start;
+      max-width: 1100px; margin: 0 auto;
+    }
+    .about-pills { display: flex; flex-direction: column; gap: 14px; }
+    .pill {
+      display: flex; align-items: center; gap: 14px;
+      background: var(--glass-strong);
+      border: 1px solid var(--gold-border);
+      border-radius: 50px; padding: 14px 22px;
+      backdrop-filter: blur(14px);
+      box-shadow: var(--shadow-sm);
+      transition: all 0.3s;
+    }
+    .pill:hover {
+      background: linear-gradient(90deg, rgba(201,146,42,0.1), rgba(255,255,255,0.8));
+      border-color: var(--gold);
+      transform: translateX(8px);
+      box-shadow: var(--shadow-gold);
+    }
+    .pill-icon {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: var(--gold-pale); border: 1px solid var(--gold-border);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--gold); font-size: 0.9rem; flex-shrink: 0;
+    }
+    .pill span { font-size: 0.9rem; font-weight: 500; color: var(--text-dark); }
+
+    .about-card {
+      background: var(--glass-strong);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius);
+      padding: 40px;
+      backdrop-filter: blur(20px);
+      box-shadow: var(--shadow-md);
+    }
+    .about-card .quote-mark {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 5rem; color: var(--gold-border);
+      line-height: 1; margin-bottom: -20px;
+    }
+    .about-card p {
+      font-size: 1rem; line-height: 1.85;
+      color: var(--text-mid);
+    }
+    .about-card p + p { margin-top: 16px; }
+    .about-divider {
+      height: 1px; background: var(--gold-border);
+      margin: 24px 0;
+    }
+
+    /* ===================================================================
+       ACCOMPLISHMENTS SECTION
+    =================================================================== */
+    #accomplishment {
+      padding: 100px 7%;
+      position: relative; z-index: 1;
+      background: var(--bg-base);
+    }
+    .acc-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px; max-width: 1100px; margin: 0 auto;
+    }
+    .acc-item {
+      border-radius: var(--radius);
+      overflow: hidden;
+      cursor: pointer;
+      position: relative;
+      box-shadow: var(--shadow-sm);
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      aspect-ratio: 4/3;
+    }
+    .acc-item img {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform 0.5s ease;
+      display: block;
+    }
+    .acc-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(22,32,64,0.85) 0%, transparent 55%);
+      display: flex; flex-direction: column;
+      justify-content: flex-end; padding: 20px;
+      opacity: 0; transition: opacity 0.3s;
+    }
+    .acc-overlay .acc-label {
+      font-size: 0.88rem; font-weight: 600; color: var(--gold-light);
+      letter-spacing: 0.5px; margin-bottom: 4px;
+    }
+    .acc-overlay .acc-hint {
+      font-size: 0.75rem; color: rgba(255,255,255,0.7);
+    }
+    .acc-item:hover { transform: translateY(-8px); box-shadow: var(--shadow-gold); }
+    .acc-item:hover img { transform: scale(1.05); }
+    .acc-item:hover .acc-overlay { opacity: 1; }
+    .acc-badge {
+      position: absolute; top: 14px; left: 14px;
+      background: linear-gradient(135deg, var(--gold), var(--gold-light));
+      color: #fff; font-size: 0.72rem; font-weight: 700;
+      letter-spacing: 1px; padding: 4px 12px; border-radius: 50px;
+      text-transform: uppercase;
+    }
+
+    /* MODAL */
+    .modal-overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(22,32,64,0.55);
+      backdrop-filter: blur(8px);
+      z-index: 2000; align-items: center; justify-content: center;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal-box {
+      background: var(--glass-strong);
+      backdrop-filter: blur(28px);
+      border: 1px solid var(--glass-border);
+      border-radius: 24px;
+      width: 860px; max-width: 92vw;
+      max-height: 90vh;
+      display: flex; overflow: hidden;
+      box-shadow: 0 24px 80px rgba(0,0,0,0.2);
+      position: relative; animation: modal-in 0.35s ease;
+    }
+    @keyframes modal-in {
+      from { opacity:0; transform: scale(0.94) translateY(20px); }
+      to   { opacity:1; transform: scale(1) translateY(0); }
+    }
+    .modal-img-side {
+      flex: 0 0 340px;
+      overflow: hidden; background: #eee;
+    }
+    .modal-img-side img {
+      width: 100%; height: 100%; object-fit: cover;
+    }
+    .modal-text-side {
+      flex: 1; padding: 44px 40px;
+      display: flex; flex-direction: column; justify-content: center;
+      overflow-y: auto;
+    }
+    .modal-text-side h3 {
+      font-size: 1.5rem; color: var(--navy);
+      margin-bottom: 20px; font-weight: 600; line-height: 1.35;
+    }
+    .modal-text-side p {
+      font-size: 0.97rem; line-height: 1.85; color: var(--text-mid);
+    }
+    .modal-close {
+      position: absolute; top: 16px; right: 18px;
+      width: 34px; height: 34px; border-radius: 50%;
+      background: rgba(255,255,255,0.7);
+      border: 1px solid var(--gold-border);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; font-size: 1rem; color: var(--text-mid);
+      transition: all 0.2s;
+    }
+    .modal-close:hover { background: var(--gold); color: #fff; }
+
+    /* Services Modal gallery */
+    .modal-gallery { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; }
+    .modal-gallery::-webkit-scrollbar { display: none; }
+    .modal-gallery img { min-width: 100%; scroll-snap-align: start; object-fit: contain; max-height: 420px; background: #f5efe5; }
+    .gallery-nav { display: flex; gap: 10px; margin-top: 14px; }
+    .gallery-nav button {
+      width: 36px; height: 36px; border-radius: 50%;
+      border: 1.5px solid var(--gold-border);
+      background: var(--glass-strong); color: var(--gold);
+      cursor: pointer; font-size: 0.9rem;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.2s;
+    }
+    .gallery-nav button:hover { background: var(--gold); color: #fff; }
+
+    /* ===================================================================
+       MISSION & VISION
+    =================================================================== */
+    #mission-vision {
+      padding: 100px 7%;
+      background: var(--bg-alt);
+      position: relative; z-index: 1;
+    }
+    .mv-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px; max-width: 700px; margin: 0 auto;
+    }
+    .mv-card {
+      background: var(--glass-strong);
+      border: 1px solid var(--gold-border);
+      border-radius: var(--radius);
+      padding: 40px 32px;
+      text-align: center;
+      backdrop-filter: blur(20px);
+      box-shadow: var(--shadow-sm);
+      transition: all 0.35s;
+    }
+    .mv-card:hover {
+      transform: translateY(-8px);
+      box-shadow: var(--shadow-gold);
+      border-color: var(--gold);
+    }
+    .mv-icon-wrap {
+      width: 70px; height: 70px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--gold-pale), rgba(229,181,103,0.18));
+      border: 1.5px solid var(--gold-border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.8rem; color: var(--gold);
+      margin: 0 auto 20px;
+      transition: all 0.3s;
+    }
+    .mv-card:hover .mv-icon-wrap {
+      background: linear-gradient(135deg, var(--gold), var(--gold-light));
+      color: #fff; transform: scale(1.1) rotate(8deg);
+    }
+    .mv-card h3 {
+      font-size: 1.1rem; font-weight: 700;
+      color: var(--gold); text-transform: uppercase;
+      letter-spacing: 2px; margin-bottom: 14px;
+    }
+    .mv-card p {
+      font-size: 1.05rem; font-style: italic;
+      color: var(--text-mid); line-height: 1.65;
+      font-family: 'Cormorant Garamond', serif; font-size: 1.15rem;
+    }
+
+    /* ===================================================================
+       SKILLS SECTION
+    =================================================================== */
+    #skills {
+      padding: 100px 7%;
+      background: var(--bg-base);
+      position: relative; z-index: 1;
+    }
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 24px; max-width: 1000px; margin: 0 auto;
+    }
+    .skill-card {
+      background: var(--glass-strong);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius);
+      padding: 40px 24px;
+      text-align: center;
+      backdrop-filter: blur(18px);
+      box-shadow: var(--shadow-sm);
+      transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .skill-card:hover {
+      transform: translateY(-10px) scale(1.02);
+      border-color: var(--gold);
+      box-shadow: var(--shadow-gold);
+    }
+    .skill-icon {
+      width: 74px; height: 74px; border-radius: 50%;
+      background: var(--gold-pale);
+      border: 1.5px solid var(--gold-border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2rem; color: var(--gold);
+      margin: 0 auto 20px;
+      transition: all 0.35s;
+    }
+    .skill-card:hover .skill-icon {
+      background: linear-gradient(135deg, var(--gold), var(--gold-light));
+      color: #fff; transform: rotate(10deg) scale(1.1);
+    }
+    .skill-card h3 {
+      font-size: 1.1rem; font-weight: 600; color: var(--navy);
+    }
+
+    /* ===================================================================
+       SERVICES SECTION
+    =================================================================== */
+    #services {
+      padding: 100px 7%;
+      background: var(--bg-alt);
+      position: relative; z-index: 1;
+    }
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 24px; max-width: 1100px; margin: 0 auto;
+    }
+    .service-card {
+      background: var(--glass-strong);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius);
+      padding: 40px 28px;
+      text-align: center;
+      backdrop-filter: blur(18px);
+      box-shadow: var(--shadow-sm);
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .service-card::before {
+      content: '';
+      position: absolute; bottom: 0; left: 0;
+      width: 100%; height: 3px;
+      background: linear-gradient(90deg, var(--gold), var(--gold-light));
+      transform: scaleX(0); transform-origin: left;
+      transition: transform 0.4s ease;
+    }
+    .service-card:hover::before { transform: scaleX(1); }
+    .service-card:hover {
+      transform: translateY(-10px);
+      border-color: var(--gold);
+      box-shadow: var(--shadow-gold);
+    }
+    .service-icon-wrap {
+      width: 80px; height: 80px; border-radius: 50%;
+      background: var(--gold-pale);
+      border: 1.5px solid var(--gold-border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2rem; color: var(--gold);
+      margin: 0 auto 22px;
+      transition: all 0.35s;
+    }
+    .service-card:hover .service-icon-wrap {
+      background: linear-gradient(135deg, var(--gold), var(--gold-light));
+      color: #fff; transform: scale(1.1) rotate(5deg);
+    }
+    .service-card h3 {
+      font-size: 1.15rem; font-weight: 600; color: var(--navy);
+      margin-bottom: 10px;
+    }
+    .service-card > p {
+      font-size: 0.88rem; color: var(--text-soft);
+      display: flex; align-items: center; justify-content: center; gap: 5px;
+    }
+    .service-card > p i { color: var(--gold); }
+    .hidden-gallery { display: none; }
+
+    /* ===================================================================
+       CONTACT SECTION
+    =================================================================== */
+    #contact {
+      padding: 100px 7%;
+      background: var(--bg-base);
+      position: relative; z-index: 1;
+    }
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.3fr;
+      gap: 50px; max-width: 1050px; margin: 0 auto;
+      align-items: start;
+    }
+    .contact-info-card {
+      background: var(--glass-strong);
+      border: 1px solid var(--gold-border);
+      border-radius: var(--radius);
+      padding: 44px 36px;
+      backdrop-filter: blur(20px);
+      box-shadow: var(--shadow-md);
+    }
+    .contact-info-card h3 {
+      font-size: 1.6rem; color: var(--navy);
+      margin-bottom: 8px; font-weight: 600;
+    }
+    .contact-info-card h3 span { color: var(--gold); }
+    .contact-info-card .sub {
+      font-size: 0.88rem; color: var(--text-soft);
+      margin-bottom: 30px;
+    }
+    .contact-row {
+      display: flex; align-items: center; gap: 14px;
+      margin-bottom: 18px;
+    }
+    .contact-row-icon {
+      width: 42px; height: 42px; border-radius: 50%;
+      background: var(--gold-pale); border: 1px solid var(--gold-border);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--gold); font-size: 1rem; flex-shrink: 0;
+    }
+    .contact-row a, .contact-row span {
+      font-size: 0.93rem; color: var(--text-dark);
+      text-decoration: none; transition: color 0.2s;
+    }
+    .contact-row a:hover { color: var(--gold); }
+    .contact-socials { display: flex; gap: 12px; margin-top: 24px; padding-top: 24px; border-top: 1px solid var(--gold-border); }
+    .contact-socials a {
+      width: 40px; height: 40px; border-radius: 50%;
+      background: var(--gold-pale); border: 1px solid var(--gold-border);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--gold); font-size: 0.95rem; text-decoration: none;
+      transition: all 0.3s;
+    }
+    .contact-socials a:hover {
+      background: var(--gold); color: #fff;
+      transform: translateY(-3px); box-shadow: var(--shadow-gold);
+    }
+
+    /* Form */
+    .contact-form-card {
+      background: var(--glass-strong);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius);
+      padding: 44px 36px;
+      backdrop-filter: blur(20px);
+      box-shadow: var(--shadow-md);
+    }
+    .form-group { margin-bottom: 18px; }
+    .form-group label {
+      display: block; font-size: 0.8rem; font-weight: 600;
+      color: var(--text-mid); letter-spacing: 0.5px;
+      text-transform: uppercase; margin-bottom: 8px;
+    }
+    .form-group input,
+    .form-group textarea {
+      width: 100%; padding: 13px 16px;
+      background: rgba(255,255,255,0.7);
+      border: 1.5px solid rgba(201,146,42,0.18);
+      border-radius: var(--radius-sm);
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.93rem; color: var(--text-dark);
+      outline: none; transition: all 0.3s;
+    }
+    .form-group input:focus,
+    .form-group textarea:focus {
+      border-color: var(--gold);
+      background: rgba(255,255,255,0.95);
+      box-shadow: 0 0 0 3px rgba(201,146,42,0.1);
+    }
+    .form-group textarea { height: 130px; resize: none; }
+
+    /* ===================================================================
+       FOOTER
+    =================================================================== */
+    footer {
+      background: var(--navy);
+      padding: 32px 7%;
+      text-align: center;
+      position: relative; z-index: 1;
+    }
+    footer .foot-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem; font-weight: 700;
+      color: #fff; margin-bottom: 8px;
+    }
+    footer .foot-logo span { color: var(--gold-light); }
+    footer p { font-size: 0.82rem; color: rgba(255,255,255,0.45); }
+
+    /* ===================================================================
+       REVEAL ANIMATIONS
+    =================================================================== */
+    .reveal {
+      opacity: 0; transform: translateY(32px);
+      transition: opacity 0.75s ease, transform 0.75s ease;
+      visibility: hidden;
+    }
+    .reveal.active {
+      opacity: 1; transform: translateY(0);
+      visibility: visible;
+    }
+
+    /* ===================================================================
+       RESPONSIVE
+    =================================================================== */
+    @media (max-width: 960px) {
+      .about-grid { grid-template-columns: 1fr; }
+      .contact-grid { grid-template-columns: 1fr; }
+      .acc-grid { grid-template-columns: repeat(2, 1fr); }
+      .modal-box { flex-direction: column-reverse; }
+      .modal-img-side { flex: 0 0 240px; }
+    }
+
+    @media (max-width: 768px) {
+      header { padding: 0 5%; }
+      nav { display: none; position: absolute; top: 70px; left: 0; width: 100%; background: rgba(250,246,240,0.98); backdrop-filter: blur(20px); border-bottom: 1px solid var(--gold-border); padding: 20px 5%; }
+      nav.open { display: block; }
+      nav ul { flex-direction: column; gap: 18px; }
+      .hamburger { display: flex; }
+      #home { flex-direction: column; text-align: center; padding: 110px 5% 60px; gap: 40px; }
+      .hero-image-wrap { order: -1; }
+      .hero-img-ring, .hero-img-inner { width: 260px; height: 260px; }
+      .hero-stats { justify-content: center; }
+      .hero-socials { justify-content: center; }
+      .hero-badge-float { right: 0; bottom: -5px; }
+      .acc-grid { grid-template-columns: 1fr; }
+      #about, #accomplishment, #mission-vision, #skills, #services, #contact { padding: 70px 5%; }
+    }
+
+    @media (max-width: 480px) {
+      .hero-badge-float { display: none; }
+      .modal-box { max-height: 95vh; }
+    }
+  </style>
 </head>
 <body>
-    <div id="preloader">
-    <div class="loader"></div>
-</div>
-    <header>
-        <div class="logo">
-        Yesin <span>Roka</span>
-    </div>
-        <nav>
-            <ul>
-                <li><a href="#home">Home</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#accomplishment">Accomplishment</a></li>
-                <li><a href="#mission-vision">Visions</a></li>
-                <li><a href="#skills">Skills</a></li>
-                <li><a href="#services">Services</a></li>
-                <li><a href="#contact">Contact</a></li>
 
-            </ul>
-        </nav>
-    </header>
-    
-    <section class="intro" id="home">
-    <div class="intro-image">
+<!-- BACKGROUND ORBS -->
+<div class="orb-layer" aria-hidden="true">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+</div>
+
+<!-- PRELOADER -->
+<div id="preloader">
+  <div class="preloader-ring"></div>
+  <div class="preloader-name">Yesin Roka</div>
+</div>
+
+<!-- HEADER -->
+<header id="header">
+  <div class="logo">Yesin <span>Roka</span></div>
+  <nav id="nav">
+    <ul>
+      <li><a href="#home">Home</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#accomplishment">Awards</a></li>
+      <li><a href="#mission-vision">Vision</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+  <div class="hamburger" id="hamburger" aria-label="Toggle menu">
+    <span></span><span></span><span></span>
+  </div>
+</header>
+
+<!-- ===================== HERO ===================== -->
+<section id="home">
+  <div class="hero-text">
+    <div class="hero-badge">✦ MDRT Member · Nepal Top Manager</div>
+    <h1>Hello, I'm<br><em>Yesin Roka Magar</em></h1>
+    <p class="hero-role-line">And I'm a <span class="typing-animation">Financial Consultant</span></p>
+    <p>Top Agency Manager at Reliable Nepal Life Insurance Ltd. | MDRT Member | Certified Trainer of Trainers. Dedicated to providing strategic financial planning and life insurance solutions that secure families across Nepal.</p>
+
+    <div class="hero-stats">
+      <div class="stat-pill">
+        <span class="num">2,000<sup style="font-size:1rem">+</sup></span>
+        <span class="lbl">Personal Clients</span>
+      </div>
+      <div class="stat-pill">
+        <span class="num">800<sup style="font-size:1rem">+</sup></span>
+        <span class="lbl">Advisors Led</span>
+      </div>
+      <div class="stat-pill">
+        <span class="num">5<sup style="font-size:1rem">+</sup></span>
+        <span class="lbl">Years Experience</span>
+      </div>
+    </div>
+
+    <div class="hero-socials">
+      <a href="https://wa.me/9779857677850" target="_blank" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+      <a href="https://www.facebook.com/share/17qG8gD3J4/" target="_blank" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+      <a href="https://youtube.com/@yesinrokaofficial?si=5p5OqaIncn7aYb39" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>
+      <a href="https://www.instagram.com/yesin_roka_magar" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+    </div>
+
+    <div style="display:flex;gap:14px;flex-wrap:wrap;align-items:center;">
+      <a href="#about" class="btn-primary"><i class="fas fa-user"></i> About Me</a>
+      <a href="#contact" class="btn-outline"><i class="fas fa-paper-plane"></i> Get In Touch</a>
+    </div>
+  </div>
+
+  <div class="hero-image-wrap">
+    <div class="hero-img-ring">
+      <div class="hero-img-inner">
         <img src="./uploads/profile.png" alt="Yesin Roka Magar">
+      </div>
     </div>
-
-    <div class="intro-text">
-        <h1>Hello, It's Me<br><span>Yesin Roka Magar</span><br>And I'm a <span class="typing-animation">Financial Consultant</span></h1>
-        <p>Top Agency Manager at Reliable Nepal Life Insurance Ltd. | MDRT Member | Certified Trainer of Trainers. Dedicated to providing strategic financial planning and life insurance solutions that secure families across Nepal.</p>
-        
-        <div class="intro-stats">
-            <div class="stat-item">
-                <span class="stat-num">2,000+</span>
-                <span class="stat-lbl">Personal Clients</span>
-            </div>
-            <div class="stat-item">
-                <span class="stat-num">800+</span>
-                <span class="stat-lbl">Advisors Led</span>
-            </div>
-        </div>
-
-        <div class="social-links">
-            <a href="https://wa.me/9779857677850"><i class="fab fa-whatsapp"></i></a>
-            <a href="https://www.facebook.com/share/17qG8gD3J4/"><i class="fa-brands fa-facebook"></i></a>
-            <a href="#"><i class="fab fa-twitter"></i></a>
-        </div>
-        
-        <a href="#about" class="btn">More About Me</a>
+    <div class="hero-badge-float">
+      <div class="badge-icon"><i class="fas fa-trophy"></i></div>
+      <div class="badge-text">
+        <strong>#1 Agency Manager</strong>
+        Nepal · FY 2080/81
+      </div>
     </div>
+  </div>
 </section>
 
-   <section class="about reveal" id="about">
-    <h2 class="section-title">A Little About Me</h2>
-    <div class="about-container">
-        
-        <div class="about-left">
-            <div class="topic-pill">Nepal Top Agency Manager at Reliable Nepal Life Insurance</div>
-            <div class="topic-pill">MDRT Member & Senior Financial Consultant</div>
-            <div class="topic-pill">Certified Trainer of Trainers</div>
-            <div class="topic-pill">Lions Club President 2025/26 - Baglung Golden</div>   
-        </div>
-        
-        <div class="about-right">
-            <div class="brief-box">
-                <p>
-                    Born in Tarakhola, Baglung, I began my academic journey at Durga Bhawani Mavi before pursuing higher studies at Caribbean College and Tribhuvan University.
-                     Since entering the insurance industry in 2020, I have established myself as a dedicated Financial Consultant and a proud MDRT member. Beyond my consultancy
-                </p>
-                <p style="margin-top: 15px;">
-                    I serve as the Secretary at Sankalpa Saving and Credit Co-operative Society Ltd. and hold several promoter roles across various sectors. Deeply committed to social impact,
-                     I am honored to serve as the Lions Club President for the 2025/26 term with the Lions Club of Baglung Golden District
-                </p>
-            </div>
-        </div>
-        
+<!-- ===================== ABOUT ===================== -->
+<section id="about" class="reveal">
+  <div class="section-title">A Little <span>About Me</span></div>
+  <div class="title-line"></div>
+  <div class="about-grid">
+    <div class="about-pills">
+      <div class="pill">
+        <div class="pill-icon"><i class="fas fa-medal"></i></div>
+        <span>Nepal Top Agency Manager – Reliable Nepal Life Insurance</span>
+      </div>
+      <div class="pill">
+        <div class="pill-icon"><i class="fas fa-star"></i></div>
+        <span>MDRT Member & Senior Financial Consultant</span>
+      </div>
+      <div class="pill">
+        <div class="pill-icon"><i class="fas fa-chalkboard-teacher"></i></div>
+        <span>Certified Trainer of Trainers</span>
+      </div>
+      <div class="pill">
+        <div class="pill-icon"><i class="fas fa-hands-helping"></i></div>
+        <span>Lions Club President 2025/26 – Baglung Golden</span>
+      </div>
+      <div class="pill">
+        <div class="pill-icon"><i class="fas fa-university"></i></div>
+        <span>Secretary – Sankalpa Saving & Credit Co-operative</span>
+      </div>
     </div>
-</section>
-<section id="accomplishment" class="accomplishment">
-    <h2 class="section-title">Accomplishment</h2>
-    <div class="pdf-grid-container">
-        
-        <div class="accomplishment-item" 
-             data-title="🏆 National Achievement: Rank #1 Agency Manager" 
-             data-long="In the Fiscal Year 2080/81, I was honored to be recognized as the Top Agency Manager in Nepal by Reliable Nepal Life Insurance. Leading the Baglung Branch to the top spot nationally,
-              this award reflects my dedication to providing world-class financial security and managing one of the country's most successful insurance teams.">
-            <div class="item-image-box">
-                <img src="./uploads/accomp1.jpeg" alt="Accomplishment 1">
-            </div>
-        </div>
-
-        <div class="accomplishment-item" 
-             data-title="🏆 A Milestone in Excellence: All-Nepal Domestic Tour Award (2081)" 
-             data-long="Recognition is the fuel for further growth. Following a record-breaking year as the #1 Agency Manager, I was honored with the Domestic Tour Package Award 2081 by Reliable Nepal Life Insurance. This 'Historical Moment' represents not just a personal victory,
-              but the collective trust and hard work of my entire team and the clients we serve across Nepal">
-            <div class="item-image-box">
-                <img src="./uploads/accomp2.jpeg" alt="Accomplishment 2">
-            </div>
-        </div>
-        <div class="accomplishment-item" 
-             data-title="MDRT (Million Dollar Round Table) Qualifier" 
-             data-long="I am honored to have been awarded the MDRT Certificate, placing my practice among the elite financial consultants worldwide. This achievement, alongside being named the No. 1 Agency Manager in Nepal,
-              reflects my unwavering dedication to providing world-class financial security and strategic planning for my clients">
-            <div class="item-image-box">
-                <img src="./uploads/accomp3.jpeg" alt="Accomplishment 3">
-            </div>
-        </div>
-        <div class="accomplishment-item" 
-             data-title="Top 1 Area Team Business Award (FY 2079/080)" 
-             data-long="Reliable Nepal Life Insurance Ltd. Led the regional team to secure the #1 position in the 'Area Team Business' category. This recognition highlights my ability to manage high-performing teams, drive regional growth, and maintain consistent business excellence across a large territory.">
-            <div class="item-image-box">
-                <img src="./uploads/accomp4.jpeg" alt="Accomplishment 4">
-            </div>
-        </div>
-        <div class="accomplishment-item" 
-             data-title="Corporate Achievement Award" 
-             data-long="A moment of recognition for business excellence and leadership at the Reliable Nepal Life Insurance national conference.
-              Committed to setting new standards in the insurance and financial services industry.">
-            <div class="item-image-box">
-                <img src="./uploads/accomp5.jpeg" alt="Accomplishment 5">
-            </div>
-        </div>
-        <div class="accomplishment-item" 
-             data-title="Samman-Patra (Letter of Appreciation) for Excellence" 
-             data-long="Awarded by Reliable Nepal Life Insurance Limited.
-                        Honored with a formal Letter of Appreciation for exceptional performance and dedicated service. 
-                         This award recognizes a career built on reliability, ethical practice, and a heroic commitment to helping families secure their financial futures across Nepal.">
-            <div class="item-image-box">
-                <img src="./uploads/accomp6.jpeg" alt="Accomplishment 6">
-            </div>
-        </div>
-
+    <div class="about-card">
+      <div class="quote-mark">"</div>
+      <p>
+        Born in Tarakhola, Baglung, I began my academic journey at Durga Bhawani Mavi before pursuing higher studies at Caribbean College and Tribhuvan University. Since entering the insurance industry in 2020, I have established myself as a dedicated Financial Consultant and a proud MDRT member.
+      </p>
+      <div class="about-divider"></div>
+      <p>
+        Beyond my consultancy, I serve as the Secretary at Sankalpa Saving and Credit Co-operative Society Ltd. and hold several promoter roles across various sectors. Deeply committed to social impact, I am honored to serve as the Lions Club President for the 2025/26 term with the Lions Club of Baglung Golden District.
+      </p>
     </div>
+  </div>
 </section>
 
-<div id="accomplishmentModal" class="modal">
-    <div class="modal-content">
-        <span class="close-btn">&times;</span>
-        
-        <div class="modal-left">
-            <h3 id="modalTitle">Title Goes Here</h3>
-            <p id="modalDescription">Description goes here...</p>
-        </div>
-        
-        <div class="modal-right">
-            <img id="modalImg" src="" alt="Popup Accomplishment">
-        </div>
+<!-- ===================== ACCOMPLISHMENTS ===================== -->
+<section id="accomplishment" class="reveal">
+  <div class="section-title">Awards & <span>Accomplishments</span></div>
+  <div class="title-line"></div>
+  <div class="acc-grid">
+
+    <div class="acc-item"
+         data-title="🏆 National Achievement: Rank #1 Agency Manager"
+         data-long="In the Fiscal Year 2080/81, I was honored to be recognized as the Top Agency Manager in Nepal by Reliable Nepal Life Insurance. Leading the Baglung Branch to the top spot nationally, this award reflects my dedication to providing world-class financial security and managing one of the country's most successful insurance teams."
+         data-badge="#1 in Nepal">
+      <img src="./uploads/accomp1.jpeg" alt="National Achievement Award">
+      <div class="acc-overlay">
+        <div class="acc-label">National Achievement</div>
+        <div class="acc-hint">Click to read more ›</div>
+      </div>
+      <div class="acc-badge">#1 in Nepal</div>
     </div>
+
+    <div class="acc-item"
+         data-title="🏆 All-Nepal Domestic Tour Award (2081)"
+         data-long="Recognition is the fuel for further growth. Following a record-breaking year as the #1 Agency Manager, I was honored with the Domestic Tour Package Award 2081 by Reliable Nepal Life Insurance. This 'Historical Moment' represents not just a personal victory, but the collective trust and hard work of my entire team and the clients we serve across Nepal."
+         data-badge="Award 2081">
+      <img src="./uploads/accomp2.jpeg" alt="Domestic Tour Award">
+      <div class="acc-overlay">
+        <div class="acc-label">Domestic Tour Award</div>
+        <div class="acc-hint">Click to read more ›</div>
+      </div>
+      <div class="acc-badge">Award 2081</div>
+    </div>
+
+    <div class="acc-item"
+         data-title="MDRT (Million Dollar Round Table) Qualifier"
+         data-long="I am honored to have been awarded the MDRT Certificate, placing my practice among the elite financial consultants worldwide. This achievement, alongside being named the No. 1 Agency Manager in Nepal, reflects my unwavering dedication to providing world-class financial security and strategic planning for my clients."
+         data-badge="MDRT">
+      <img src="./uploads/accomp3.jpeg" alt="MDRT Certificate">
+      <div class="acc-overlay">
+        <div class="acc-label">MDRT Qualifier</div>
+        <div class="acc-hint">Click to read more ›</div>
+      </div>
+      <div class="acc-badge">MDRT</div>
+    </div>
+
+    <div class="acc-item"
+         data-title="Top 1 Area Team Business Award (FY 2079/080)"
+         data-long="Led the regional team to secure the #1 position in the 'Area Team Business' category at Reliable Nepal Life Insurance Ltd. This recognition highlights my ability to manage high-performing teams, drive regional growth, and maintain consistent business excellence across a large territory."
+         data-badge="Top Team">
+      <img src="./uploads/accomp4.jpeg" alt="Area Team Award">
+      <div class="acc-overlay">
+        <div class="acc-label">Top Area Team</div>
+        <div class="acc-hint">Click to read more ›</div>
+      </div>
+      <div class="acc-badge">Top Team</div>
+    </div>
+
+    <div class="acc-item"
+         data-title="Corporate Achievement Award"
+         data-long="A moment of recognition for business excellence and leadership at the Reliable Nepal Life Insurance national conference. Committed to setting new standards in the insurance and financial services industry."
+         data-badge="Corporate">
+      <img src="./uploads/accomp5.jpeg" alt="Corporate Achievement">
+      <div class="acc-overlay">
+        <div class="acc-label">Corporate Achievement</div>
+        <div class="acc-hint">Click to read more ›</div>
+      </div>
+      <div class="acc-badge">Corporate</div>
+    </div>
+
+    <div class="acc-item"
+         data-title="Samman-Patra (Letter of Appreciation)"
+         data-long="Awarded by Reliable Nepal Life Insurance Limited. Honored with a formal Letter of Appreciation for exceptional performance and dedicated service. This award recognizes a career built on reliability, ethical practice, and a heroic commitment to helping families secure their financial futures across Nepal."
+         data-badge="Honour">
+      <img src="./uploads/accomp6.jpeg" alt="Letter of Appreciation">
+      <div class="acc-overlay">
+        <div class="acc-label">Samman-Patra</div>
+        <div class="acc-hint">Click to read more ›</div>
+      </div>
+      <div class="acc-badge">Honour</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ACCOMPLISHMENT MODAL -->
+<div class="modal-overlay" id="accModal">
+  <div class="modal-box">
+    <div class="modal-img-side">
+      <img id="accModalImg" src="" alt="">
+    </div>
+    <div class="modal-text-side">
+      <h3 id="accModalTitle"></h3>
+      <p id="accModalDesc"></p>
+    </div>
+    <div class="modal-close" id="accModalClose" aria-label="Close">✕</div>
+  </div>
 </div>
-    <section class="mission-vision reveal" id="mission-vision">
-    <h2 class="section-title">Mission & <span>Vision</span></h2>
-    
-    <div class="mv-grid">
-        <div class="mv-card">
-            <div class="mv-icon">
-                <i class="fa-solid fa-house"></i>
-            </div>
-            <h3>Mission</h3>
-            <p>“Helping families secure their future”</p>
-        </div>
 
-        <div class="mv-card">
-            <div class="mv-icon">
-                <i class="fas fa-lightbulb"></i>
-            </div>
-            <h3>Vision</h3>
-            <p>“Building financially aware society”</p>
-        </div>
+<!-- ===================== MISSION & VISION ===================== -->
+<section id="mission-vision" class="reveal">
+  <div class="section-title">Mission & <span>Vision</span></div>
+  <div class="title-line"></div>
+  <div class="mv-grid">
+    <div class="mv-card">
+      <div class="mv-icon-wrap"><i class="fas fa-bullseye"></i></div>
+      <h3>Mission</h3>
+      <p>"Helping families secure their future through strategic financial planning and life insurance solutions."</p>
     </div>
-</section>
-<section class="skills-section reveal" id="skills">
-    <h2 class="section-title">PROFESSIONAL SKILLS</h2>
-    <div class="skills-grid">
-        
-        <div class="skill-card">
-            <div class="skill-icon-box">
-                <i class="fas fa-lightbulb"></i>
-            </div>
-            <h3>Problem Solving</h3>
-        </div>
-
-        <div class="skill-card">
-            <div class="skill-icon-box">
-                <i class="fas fa-users-cog"></i>
-            </div>
-            <h3>Leadership</h3>
-        </div>
-
-        <div class="skill-card">
-            <div class="skill-icon-box">
-                <i class="fas fa-comments"></i>
-            </div>
-            <h3>Communication</h3>
-        </div>
-
-        <div class="skill-card">
-            <div class="skill-icon-box">
-                <i class="fas fa-sync-alt"></i>
-            </div>
-            <h3>Adaptability</h3>
-        </div>
-
+    <div class="mv-card">
+      <div class="mv-icon-wrap"><i class="fas fa-binoculars"></i></div>
+      <h3>Vision</h3>
+      <p>"To become Nepal's most trusted financial leader — empowering communities one family at a time."</p>
     </div>
-</section> 
-<section class="services reveal" id="services">
-    <h2 class="section-title">Professional <span>Services</span></h2>
-    <p class="section-subtitle">Tailored financial strategies to secure your future and grow your legacy.</p>
-    
-    <div class="services-grid">
-        <div class="service-card service-trigger" 
-             data-title="Comprehensive protection plans designed to provide absolute financial security for your loved ones" 
-             data-long="Life insurance isn't just a policy; it's a promise to protect the people who matter most. I help families secure their future, ensuring that children’s education, home mortgages, and daily living standards are protected no matter what the future holds.">
-            <div class="service-icon"><i class="fas fa-shield-alt"></i></div>
-            <h3>Life Insurance</h3>
-            <p>Click to view gallery</p>
-            <div class="hidden-gallery" style="display:none;">
-                <img src="./uploads/insure.jpeg">
-                <img src="./uploads/insure1.jpeg">
-            </div>
-        </div>
-
-        <div class="service-card service-trigger" 
-             data-title="Strategic investment advice and asset growth strategies to help you achieve long-term financial independence" 
-             data-long="True wealth management goes beyond just saving money; it is about making your money work as hard as you do. I analyze your financial goals and risk tolerance to build a customized roadmap that preserves your wealth and grows your legacy.">
-            <div class="service-icon"><i class="fas fa-chart-line"></i></div>
-            <h3>Wealth Management</h3>
-            <p>Click to view gallery</p>
-            <div class="hidden-gallery" style="display:none;">
-                <img src="./uploads/wealth.jpeg">
-                <img src="./uploads/wealth1.jpeg">
-            </div>
-        </div>
-
-        <div class="service-card service-trigger" 
-             data-title="Retirement Planning" 
-             data-long="Retirement should be the golden era of your life, not a period of financial stress. I design reliable income streams and smart pension strategies so you can maintain your lifestyle and enjoy total peace of mind after your working years.">
-            <div class="service-icon"><i class="fas fa-piggy-bank"></i></div>
-            <h3>Retirement Planning</h3>
-            <p>Click to view gallery</p>
-            <div class="hidden-gallery" style="display:none;">
-                <img src="./uploads/retirement.jpeg">
-            </div>
-        </div>
-
-        <div class="service-card service-trigger" 
-             data-title="Leadership development and financial literacy workshops for organizations looking to empower their teams." 
-             data-long="A financially aware and highly motivated workforce is the backbone of any great organization. I conduct high-impact training sessions and workshops that elevate team mindsets, boost sales performance, and build strong organizational leaders.">
-            <div class="service-icon"><i class="fas fa-chalkboard-teacher"></i></div>
-            <h3>Corporate Training</h3>
-            <p>Click to view gallery</p>
-            <div class="hidden-gallery" style="display:none;">
-                <img src="./uploads/team.jpeg">
-                <img src="./uploads/team1.jpeg">
-               <img src="./uploads/team0.jpeg">
-            </div>
-        </div>
-    </div>
+  </div>
 </section>
 
-<script src="js/services.js"></script>
-    <section class="contact" id="contact">
-        <div class="contact-content">
-            <div class="contact-info">
-    <h2>Contact <span>Me</span></h2>
-    
-    <div class="contact-details">
-        <div class="contact-item">
-            <a href="tel:+9779857677850" class="contact-link">
-                <i class="fas fa-phone-alt"></i> 9857677850
-            </a>
-        </div>
-        <div class="contact-item">
-            <a href="tel:+9779818844962" class="contact-link">
-                <i class="fas fa-phone-alt"></i> 9818844962
-            </a>
-        </div>
-        
-        <p><strong>Location: </strong>Baglung, Nepal</p>
+<!-- ===================== SKILLS ===================== -->
+<section id="skills" class="reveal">
+  <div class="section-title">Professional <span>Skills</span></div>
+  <div class="title-line"></div>
+  <div class="skills-grid">
+    <div class="skill-card">
+      <div class="skill-icon"><i class="fas fa-lightbulb"></i></div>
+      <h3>Problem Solving</h3>
+    </div>
+    <div class="skill-card">
+      <div class="skill-icon"><i class="fas fa-users-cog"></i></div>
+      <h3>Leadership</h3>
+    </div>
+    <div class="skill-card">
+      <div class="skill-icon"><i class="fas fa-comments"></i></div>
+      <h3>Communication</h3>
+    </div>
+    <div class="skill-card">
+      <div class="skill-icon"><i class="fas fa-sync-alt"></i></div>
+      <h3>Adaptability</h3>
+    </div>
+  </div>
+</section>
 
-        <div class="contact-item">
-            <p>
-                <strong>Email:</strong> 
-                <a href="mailto:yesinmagar04@gmail.com" class="contact-link">
-                    <i class="fas fa-envelope"></i> yesinmagar04@gmail.com
-                </a>
-            </p>
-        </div>
+<!-- ===================== SERVICES ===================== -->
+<section id="services" class="reveal">
+  <div class="section-title">Professional <span>Services</span></div>
+  <div class="title-line"></div>
+  <p class="section-sub">Tailored financial strategies to secure your future and grow your legacy.</p>
+  <div class="services-grid">
+
+    <div class="service-card service-trigger"
+         data-title="Life Insurance"
+         data-long="Life insurance isn't just a policy; it's a promise to protect the people who matter most. I help families secure their future, ensuring that children's education, home mortgages, and daily living standards are protected no matter what the future holds.">
+      <div class="service-icon-wrap"><i class="fas fa-shield-alt"></i></div>
+      <h3>Life Insurance</h3>
+      <p><i class="fas fa-images"></i> View Gallery</p>
+      <div class="hidden-gallery">
+        <img src="./uploads/insure.jpeg">
+        <img src="./uploads/insure1.jpeg">
+      </div>
     </div>
 
-    <div class="social-links">
-        <a href="https://www.facebook.com/share/17qG8gD3J4/"><i class="fa-brands fa-facebook"></i></a>
-        <a href="https://youtube.com/@yesinrokaofficial?si=5p5OqaIncn7aYb39"><i class="fa-brands fa-youtube"></i></a>
-        <a href="#"><i class="fab fa-twitter"></i></a>
-        <a href="https://www.instagram.com/yesin_roka_magar "><i class="fa-brands fa-instagram"></i></a>
+    <div class="service-card service-trigger"
+         data-title="Wealth Management"
+         data-long="True wealth management goes beyond just saving money; it is about making your money work as hard as you do. I analyze your financial goals and risk tolerance to build a customized roadmap that preserves your wealth and grows your legacy.">
+      <div class="service-icon-wrap"><i class="fas fa-chart-line"></i></div>
+      <h3>Wealth Management</h3>
+      <p><i class="fas fa-images"></i> View Gallery</p>
+      <div class="hidden-gallery">
+        <img src="./uploads/wealth.jpeg">
+        <img src="./uploads/wealth1.jpeg">
+      </div>
     </div>
+
+    <div class="service-card service-trigger"
+         data-title="Retirement Planning"
+         data-long="Retirement should be the golden era of your life, not a period of financial stress. I design reliable income streams and smart pension strategies so you can maintain your lifestyle and enjoy total peace of mind after your working years.">
+      <div class="service-icon-wrap"><i class="fas fa-piggy-bank"></i></div>
+      <h3>Retirement Planning</h3>
+      <p><i class="fas fa-images"></i> View Gallery</p>
+      <div class="hidden-gallery">
+        <img src="./uploads/retirement.jpeg">
+      </div>
+    </div>
+
+    <div class="service-card service-trigger"
+         data-title="Corporate Training"
+         data-long="A financially aware and highly motivated workforce is the backbone of any great organization. I conduct high-impact training sessions and workshops that elevate team mindsets, boost sales performance, and build strong organizational leaders.">
+      <div class="service-icon-wrap"><i class="fas fa-chalkboard-teacher"></i></div>
+      <h3>Corporate Training</h3>
+      <p><i class="fas fa-images"></i> View Gallery</p>
+      <div class="hidden-gallery">
+        <img src="./uploads/team.jpeg">
+        <img src="./uploads/team1.jpeg">
+        <img src="./uploads/team0.jpeg">
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- SERVICES MODAL (reuses accModal structure) -->
+<div class="modal-overlay" id="svcModal">
+  <div class="modal-box" style="flex-direction:column; max-width:680px;">
+    <div class="modal-text-side" style="flex:0 0 auto; padding:36px 40px 24px;">
+      <h3 id="svcModalTitle"></h3>
+      <p id="svcModalDesc"></p>
+    </div>
+    <div id="svcGalleryWrap" style="padding:0 24px 24px;">
+      <div class="modal-gallery" id="svcGallery"></div>
+      <div class="gallery-nav" id="svcGalleryNav"></div>
+    </div>
+    <div class="modal-close" id="svcModalClose" aria-label="Close">✕</div>
+  </div>
 </div>
-            <div class="contact-form">
-               <form action="https://formspree.io/f/mpqodrjv" method="POST">
-    <input type="text" name="name" placeholder="Enter Your Name" required>
-    
-    <input type="email" name="_replyto" placeholder="Enter Your Email" required>
-    
-    <input type="text" name="subject" placeholder="Enter Your Subject" required>
-    
-    <textarea name="message" placeholder="Enter Your Message" required></textarea>
-    
-    <button type="submit" class="btn">Submit</button>
-</form>
-            </div>
+
+<!-- ===================== CONTACT ===================== -->
+<section id="contact" class="reveal">
+  <div class="section-title">Get In <span>Touch</span></div>
+  <div class="title-line"></div>
+  <div class="contact-grid">
+    <div class="contact-info-card">
+      <h3>Contact <span>Me</span></h3>
+      <p class="sub">Open to conversations about financial planning, leadership & partnerships.</p>
+
+      <div class="contact-row">
+        <div class="contact-row-icon"><i class="fas fa-phone-alt"></i></div>
+        <a href="tel:+9779857677850">9857677850</a>
+      </div>
+      <div class="contact-row">
+        <div class="contact-row-icon"><i class="fas fa-phone-alt"></i></div>
+        <a href="tel:+9779818844962">9818844962</a>
+      </div>
+      <div class="contact-row">
+        <div class="contact-row-icon"><i class="fas fa-map-marker-alt"></i></div>
+        <span>Baglung, Nepal</span>
+      </div>
+      <div class="contact-row">
+        <div class="contact-row-icon"><i class="fas fa-envelope"></i></div>
+        <a href="mailto:yesinmagar04@gmail.com">yesinmagar04@gmail.com</a>
+      </div>
+
+      <div class="contact-socials">
+        <a href="https://www.facebook.com/share/17qG8gD3J4/" target="_blank"><i class="fab fa-facebook-f"></i></a>
+        <a href="https://youtube.com/@yesinrokaofficial?si=5p5OqaIncn7aYb39" target="_blank"><i class="fab fa-youtube"></i></a>
+        <a href="https://www.instagram.com/yesin_roka_magar" target="_blank"><i class="fab fa-instagram"></i></a>
+        <a href="https://wa.me/9779857677850" target="_blank"><i class="fab fa-whatsapp"></i></a>
+      </div>
+    </div>
+
+    <div class="contact-form-card">
+      <form action="https://formspree.io/f/mpqodrjv" method="POST">
+        <div class="form-group">
+          <label>Your Name</label>
+          <input type="text" name="name" placeholder="Full name" required>
         </div>
-    </section>
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" name="_replyto" placeholder="email@example.com" required>
+        </div>
+        <div class="form-group">
+          <label>Subject</label>
+          <input type="text" name="subject" placeholder="What's this about?" required>
+        </div>
+        <div class="form-group">
+          <label>Message</label>
+          <textarea name="message" placeholder="Write your message here…" required></textarea>
+        </div>
+        <button type="submit" class="btn-primary" style="width:100%;justify-content:center;padding:14px;">
+          <i class="fas fa-paper-plane"></i> Send Message
+        </button>
+      </form>
+    </div>
+  </div>
+</section>
 
-    <script src="script.js"></script>
-   <script>
-  const revealElements = document.querySelectorAll(".reveal");
+<!-- FOOTER -->
+<footer>
+  <div class="foot-logo">Yesin <span>Roka</span></div>
+  <p style="margin-top:8px;">© 2025 Yesin Roka Magar · Financial Consultant &amp; MDRT Member · Baglung, Nepal</p>
+</footer>
 
-  const revealOnScroll = () => {
-    revealElements.forEach((el) => {
-      const windowHeight = window.innerHeight;
-      const elementTop = el.getBoundingClientRect().top;
-      const elementBottom = el.getBoundingClientRect().bottom;
-      const revealPoint = 150; // Distance from bottom of screen to trigger
+<!-- ===================== JAVASCRIPT ===================== -->
+<script>
+  /* PRELOADER */
+  const hideLoader = () => document.getElementById('preloader').classList.add('hidden');
+  window.addEventListener('load', hideLoader);
+  setTimeout(hideLoader, 5000);
 
-      // Check if the element is within the visible window area
-      if (elementTop < windowHeight - revealPoint && elementBottom > 0) {
-        el.classList.add("active");
-      } else {
-        // This line allows the animation to repeat every time you scroll back
-        el.classList.remove("active");
-      }
+  /* HAMBURGER */
+  const hamburger = document.getElementById('hamburger');
+  const navEl = document.getElementById('nav');
+  hamburger.addEventListener('click', () => navEl.classList.toggle('open'));
+  navEl.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navEl.classList.remove('open')));
+
+  /* HEADER SCROLL */
+  window.addEventListener('scroll', () => {
+    document.getElementById('header').classList.toggle('scrolled', window.scrollY > 20);
+  });
+
+  /* TYPING ANIMATION */
+  const words = ["Financial Consultant","MDRT Member","Certified Trainer","Managing Director","Financial Advisor","Content Creator"];
+  let wi = 0, ci = 0, cur = '';
+  const el = document.querySelector('.typing-animation');
+  function type() {
+    if (!el) return;
+    if (ci < words[wi].length) { cur += words[wi][ci++]; el.textContent = cur; setTimeout(type, 100); }
+    else setTimeout(erase, 2000);
+  }
+  function erase() {
+    if (ci > 0) { cur = cur.slice(0,-1); el.textContent = cur; ci--; setTimeout(erase, 50); }
+    else { wi = (wi+1) % words.length; setTimeout(type, 600); }
+  }
+  type();
+
+  /* REVEAL ON SCROLL */
+  const revealAll = () => {
+    document.querySelectorAll('.reveal').forEach(el => {
+      const top = el.getBoundingClientRect().top;
+      if (top < window.innerHeight - 100) el.classList.add('active');
+      else el.classList.remove('active');
     });
   };
+  window.addEventListener('scroll', revealAll);
+  revealAll();
 
-  window.addEventListener("scroll", revealOnScroll);
-  // Run on load to catch elements already in view
-  revealOnScroll();
+  /* ACCOMPLISHMENT MODAL */
+  const accModal = document.getElementById('accModal');
+  document.querySelectorAll('.acc-item').forEach(item => {
+    item.addEventListener('click', () => {
+      document.getElementById('accModalTitle').textContent = item.dataset.title;
+      document.getElementById('accModalDesc').textContent = item.dataset.long;
+      document.getElementById('accModalImg').src = item.querySelector('img').src;
+      accModal.classList.add('open');
+    });
+  });
+  document.getElementById('accModalClose').onclick = () => accModal.classList.remove('open');
+  accModal.addEventListener('click', e => { if (e.target === accModal) accModal.classList.remove('open'); });
+
+  /* SERVICES MODAL */
+  const svcModal = document.getElementById('svcModal');
+  const svcGallery = document.getElementById('svcGallery');
+  const svcGalleryNav = document.getElementById('svcGalleryNav');
+
+  document.querySelectorAll('.service-trigger').forEach(card => {
+    card.addEventListener('click', () => {
+      document.getElementById('svcModalTitle').textContent = card.dataset.title;
+      document.getElementById('svcModalDesc').textContent = card.dataset.long;
+
+      svcGallery.innerHTML = '';
+      svcGalleryNav.innerHTML = '';
+      const imgs = card.querySelectorAll('.hidden-gallery img');
+
+      imgs.forEach(img => {
+        const i = document.createElement('img');
+        i.src = img.src; i.className = '';
+        i.style.cssText = 'min-width:100%;scroll-snap-align:start;object-fit:contain;max-height:380px;background:#f5efe5;';
+        svcGallery.appendChild(i);
+      });
+
+      if (imgs.length > 1) {
+        const prev = document.createElement('button');
+        const next = document.createElement('button');
+        prev.innerHTML = '&#10094;'; next.innerHTML = '&#10095;';
+        prev.onclick = () => svcGallery.scrollBy({left:-400, behavior:'smooth'});
+        next.onclick = () => svcGallery.scrollBy({left: 400, behavior:'smooth'});
+        svcGalleryNav.appendChild(prev);
+        svcGalleryNav.appendChild(next);
+      }
+
+      svcModal.classList.add('open');
+    });
+  });
+  document.getElementById('svcModalClose').onclick = () => svcModal.classList.remove('open');
+  svcModal.addEventListener('click', e => { if (e.target === svcModal) svcModal.classList.remove('open'); });
 </script>
-<script src="service.js"></script>
 </body>
 </html>
